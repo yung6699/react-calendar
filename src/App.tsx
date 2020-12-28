@@ -1,12 +1,12 @@
-import React from 'react';
+import React from "react";
+import CalendarContainer from "./container/CalendarContainer";
 
-function App() {
+const App = () => {
   return (
     <div>
-
+      <CalendarContainer />
     </div>
   );
 }
 
 export default App;
-

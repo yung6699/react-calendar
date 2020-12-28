@@ -19,7 +19,9 @@ module.exports = {
       jsx: true, // 리액트 JSX 파싱
     },
   },
-  rules: {},
+  rules: {
+    "import/no-unresolved": "off",
+  },
   settings: {
     react: {
       version: "detect", // eslint-plugin-react가 자동 리액트버전탐지
