@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FIRST_MONTH, LAST_MONTH } from "../constants";
-import { getEndDays } from "../utils";
+import { getEndDays, getFirstDayIndexOfWeek } from "../utils";
 import styled from "styled-components";
 import dayjs from "dayjs";
 
@@ -32,56 +32,56 @@ const CalendarTable = styled.div`
 
 const CalendarTemplate = () => {
   const date = dayjs();
-  const [currentYear, setCurrentYear] = useState<number>(date.year());
-  const [currentMonth, setCurrentMonth] = useState<number>(date.month() + 1);
-  const [currentDay, setCurrentDay] = useState<number>(date.date());
-  const [currentDayOfWeek, setDayOfWeek] = useState<number>(date.day());
+  const [selectedYear, setSelectedYear] = useState<number>(date.year());
+  const [selectedMonth, setSelectedMonth] = useState<number>(date.month() + 1);
+  const [selectedDay, setSelectedDay] = useState<number>(date.date());
+  const [selectedCurrentDayOfWeek, setSelectedDayOfWeek] = useState<number>(date.day());
   const [endDays, setEndDays] = useState<number[]>([]);
 
   useEffect(() => {
-    setCurrentYear(date.year());
+    setSelectedYear(date.year());
   }, []);
 
   useEffect(() => {
-    const endDays = getEndDays(currentYear);
+    const endDays = getEndDays(selectedYear);
     setEndDays([...endDays]);
-  }, [currentYear]);
+  }, [selectedYear]);
 
   const onIncrease = () => {
-    if (currentMonth === LAST_MONTH) {
-      setCurrentMonth(FIRST_MONTH);
-      setCurrentYear(currentYear + 1);
-      return;
-    }
-
-    setCurrentMonth(currentMonth + 1);
+    const isLastMonth = selectedMonth === LAST_MONTH;
+    const newMonth = isLastMonth ? FIRST_MONTH : selectedMonth + 1;
+    const newYear = isLastMonth ? selectedYear + 1 : selectedYear;
+    const newDayOfWeek = (getFirstDayIndexOfWeek(newYear, newMonth) + selectedDay) % 7;
+    setSelectedYear(newYear);
+    setSelectedMonth(newMonth);
+    setSelectedDayOfWeek(newDayOfWeek); // 선택 날짜의 요일
   };
 
   const onDecrease = () => {
-    if (currentMonth === FIRST_MONTH) {
-      setCurrentMonth(LAST_MONTH);
-      setCurrentYear(currentYear - 1);
-      return;
-    }
-
-    setCurrentMonth(currentMonth - 1);
+    const isFirstMonth = selectedMonth === FIRST_MONTH;
+    const newMonth = isFirstMonth ? LAST_MONTH : selectedMonth - 1;
+    const newYear = isFirstMonth ? selectedYear - 1 : selectedYear;
+    const newDayOfWeek = (getFirstDayIndexOfWeek(newYear, newMonth) + selectedDay) % 7;
+    setSelectedYear(newYear);
+    setSelectedMonth(newMonth);
+    setSelectedDayOfWeek(newDayOfWeek);
   };
 
   const onClickDay = (day: number, dayOfWeek: number) => {
-    setCurrentDay(day); // 선택 날짜
-    setDayOfWeek(dayOfWeek); // 선택 날짜의 요일
+    setSelectedDay(day); // 선택 날짜
+    setSelectedDayOfWeek(dayOfWeek); // 선택 날짜의 요일
   };
 
   return (
     <CalendarContainer>
-      <CalendarSide day={currentDay} dayOfWeek={currentDayOfWeek} />
+      <CalendarSide day={selectedDay} dayOfWeek={selectedCurrentDayOfWeek} />
       <CalendarTable>
         <table>
-          <CalendarHead year={currentYear} month={currentMonth} onIncrease={onIncrease} onDecrease={onDecrease} />
+          <CalendarHead year={selectedYear} month={selectedMonth} onIncrease={onIncrease} onDecrease={onDecrease} />
           <CalendarMain
-            currentYear={currentYear}
-            currentDay={currentDay}
-            currentMonth={currentMonth}
+            selectedYear={selectedYear}
+            selectedDay={selectedDay}
+            selectedMonth={selectedMonth}
             endDays={endDays}
             onClickDay={onClickDay}
           />

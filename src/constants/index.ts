@@ -18,3 +18,6 @@ export const MONTHS: string[] = [
 export const END_DAYS: number[] = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 export const FIRST_MONTH = 1;
 export const LAST_MONTH = 12;
+
+export const DAY_BOX_COUNT = 42;
+export const LINE_COUNT = 6;

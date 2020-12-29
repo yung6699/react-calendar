@@ -5,8 +5,8 @@ import { getWeekClass } from "../utils";
 
 interface DayProps {
   day: number | null;
-  currentDay: number;
-  currentDayOfWeek: number;
+  selectedDay: number;
+  dayOfWeek: number;
   onClick: (day: number, dayOfWeek: number) => void;
 }
 
@@ -34,16 +34,16 @@ const Item = styled.td`
   }
 `;
 
-const CalendarDay = ({ day, currentDayOfWeek, currentDay, onClick }: DayProps) => {
-  const getActiveClass = (currentDay: number) => {
-    const isActive = currentDay === day;
+const CalendarDay = ({ day, dayOfWeek, selectedDay, onClick }: DayProps) => {
+  const getActiveClass = (selectedDay: number) => {
+    const isActive = selectedDay === day;
     return isActive ? "active" : "";
   };
 
   return (
     <Item
-      className={[getActiveClass(currentDay), getWeekClass(currentDayOfWeek)].join(" ")}
-      onClick={() => day && onClick(day, currentDayOfWeek)}>
+      className={[getActiveClass(selectedDay), getWeekClass(dayOfWeek)].join(" ")}
+      onClick={() => day && onClick(day, dayOfWeek)}>
       {day}
     </Item>
   );
