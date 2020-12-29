@@ -7,6 +7,6 @@ const App = () => {
       <CalendarContainer />
     </div>
   );
-}
+};
 
 export default App;
