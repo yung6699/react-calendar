@@ -1,11 +1,13 @@
 import React from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { CALENDAR_ITEM_WIDTH } from "../styles/Variables";
+import { getWeekClass } from "../utils";
 
 interface DayProps {
-  day: number;
+  day: number | null;
   currentDay: number;
-  onClick: (day: number) => void;
+  currentDayOfWeek: number;
+  onClick: (day: number, dayOfWeek: number) => void;
 }
 
 const Item = styled.td`
@@ -14,6 +16,8 @@ const Item = styled.td`
   align-items: center;
   width: ${CALENDAR_ITEM_WIDTH};
   font-size: 24px;
+  font-weight: 500;
+  color: #0c050b;
   cursor: pointer;
 
   &:after {
@@ -25,15 +29,21 @@ const Item = styled.td`
   &.active {
     position: relative;
     color: #fff;
-    background: #2ae1ad;
+    background: #0c050b;
     border-radius: 50%;
   }
 `;
 
-const CalendarDay = ({ day, currentDay, onClick }: DayProps) => {
-  const isActive = currentDay === day;
+const CalendarDay = ({ day, currentDayOfWeek, currentDay, onClick }: DayProps) => {
+  const getActiveClass = (currentDay: number) => {
+    const isActive = currentDay === day;
+    return isActive ? "active" : "";
+  };
+
   return (
-    <Item className={isActive ? "active" : ""} onClick={() => onClick(day)}>
+    <Item
+      className={[getActiveClass(currentDay), getWeekClass(currentDayOfWeek)].join(" ")}
+      onClick={() => day && onClick(day, currentDayOfWeek)}>
       {day}
     </Item>
   );

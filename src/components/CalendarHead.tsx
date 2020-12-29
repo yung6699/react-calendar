@@ -1,14 +1,15 @@
 import React from "react";
 import styled from "styled-components";
-import { DAY_OF_THE_WEEK } from "../constants";
+import { DAY_OF_THE_WEEK, MONTHS } from "../constants";
 import { CALENDAR_ITEM_WIDTH, CALENDAR_ITEM_HEIGHT } from "../styles/Variables";
+import { getWeekClass } from "../utils";
 
 const MainTitle = styled.tr`
   display: flex;
   justify-content: space-between;
   width: 100%;
-  height: 70px;
-  color: #916aff;
+  height: 50px;
+  color: #0c050b;
   font-size: 24px;
   font-weight: bold;
 
@@ -27,7 +28,7 @@ const MainTitle = styled.tr`
     align-items: center;
 
     .calendar__title__year {
-      margin-right: 16px;
+      margin-left: 16px;
     }
   }
 `;
@@ -42,6 +43,7 @@ const DayOfWeek = styled.tr`
     display: flex;
     justify-content: center;
     align-items: center;
+    color: #0c050b;
 
     width: ${CALENDAR_ITEM_WIDTH};
     height: ${CALENDAR_ITEM_HEIGHT};
@@ -57,6 +59,10 @@ interface CalendarHeadProps {
 }
 
 const CalendarHead = ({ year, month, onIncrease, onDecrease }: CalendarHeadProps) => {
+  const getMonth = (month: number) => {
+    return MONTHS[month - 1].substring(0, 3).toUpperCase();
+  };
+
   return (
     <thead>
       <MainTitle>
@@ -64,8 +70,8 @@ const CalendarHead = ({ year, month, onIncrease, onDecrease }: CalendarHeadProps
           &#60;
         </td>
         <td className={"calendar__title"}>
-          <div className={"calendar__title__year"}>{year}년</div>
-          <div className={"calendar__title__month"}>{month}월</div>
+          <b className={"calendar__title__month"}>{getMonth(month)}</b>
+          <b className={"calendar__title__year"}>{year}</b>
         </td>
         <td className={"calendar__next"} onClick={onIncrease}>
           &#62;
@@ -73,7 +79,12 @@ const CalendarHead = ({ year, month, onIncrease, onDecrease }: CalendarHeadProps
       </MainTitle>
       <DayOfWeek>
         {DAY_OF_THE_WEEK.map((item: string, index: number) => {
-          return <td key={index}>{item}</td>;
+          const name = item.substring(0, 3);
+          return (
+            <td key={index} className={getWeekClass(index)}>
+              {name}
+            </td>
+          );
         })}
       </DayOfWeek>
     </thead>
