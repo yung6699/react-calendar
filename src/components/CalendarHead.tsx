@@ -7,7 +7,7 @@ const MainTitle = styled.tr`
   display: flex;
   justify-content: space-between;
   width: 100%;
-  height: 50px;
+  height: 70px;
   color: #916aff;
   font-size: 24px;
   font-weight: bold;
@@ -34,12 +34,15 @@ const MainTitle = styled.tr`
 const DayOfWeek = styled.tr`
   width: 100%;
   display: flex;
+
   td {
     display: flex;
     justify-content: center;
     align-items: center;
+
     width: ${CALENDAR_ITEM_WIDTH};
     height: ${CALENDAR_ITEM_HEIGHT};
+    font-weight: bold;
   }
 `;
 
