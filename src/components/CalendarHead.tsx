@@ -18,6 +18,7 @@ const MainTitle = styled.tr`
     justify-content: center;
     align-items: center;
     padding: 0 16px;
+    cursor: pointer;
   }
 
   .calendar__title {
@@ -32,8 +33,10 @@ const MainTitle = styled.tr`
 `;
 
 const DayOfWeek = styled.tr`
-  width: 100%;
   display: flex;
+  width: 100%;
+  font-size: 20px;
+  color: #2ae1ae;
 
   td {
     display: flex;
@@ -49,18 +52,24 @@ const DayOfWeek = styled.tr`
 interface CalendarHeadProps {
   year: number;
   month: number;
+  onIncrease: () => void;
+  onDecrease: () => void;
 }
 
-const CalendarHead = ({ year, month }: CalendarHeadProps) => {
+const CalendarHead = ({ year, month, onIncrease, onDecrease }: CalendarHeadProps) => {
   return (
     <thead>
       <MainTitle>
-        <td className={"calendar__prev"}>&#60;</td>
+        <td className={"calendar__prev"} onClick={onDecrease}>
+          &#60;
+        </td>
         <td className={"calendar__title"}>
           <div className={"calendar__title__year"}>{year}년</div>
           <div className={"calendar__title__month"}>{month}월</div>
         </td>
-        <td className={"calendar__next"}>&#62;</td>
+        <td className={"calendar__next"} onClick={onIncrease}>
+          &#62;
+        </td>
       </MainTitle>
       <DayOfWeek>
         {DAY_OF_THE_WEEK.map((item: string, index: number) => {

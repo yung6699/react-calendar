@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
 import CalendarDay from "./CalendarDay";
 import styled from "styled-components";
-import { CALENDAR_ITEM_HEIGHT } from "../styles/Variables";
 
 const Row = styled.tr`
   display: flex;
-  height: ${CALENDAR_ITEM_HEIGHT};
 `;
 
-const CalendarMain = () => {
+interface CalendarMainProps {
+  currentDay: number;
+  onClickDay: (day: number) => void;
+}
+
+const CalendarMain = ({ currentDay, onClickDay }: CalendarMainProps) => {
   const [dayRows, setDayRows] = useState<number[][]>([]);
 
   useEffect(() => {
@@ -22,13 +25,12 @@ const CalendarMain = () => {
       }
     }
 
-    console.log(arr);
     setDayRows(arr);
   }, []);
 
   const makeRow = (row: number[]) => {
     return row.map((day, idx) => {
-      return <CalendarDay key={idx} day={day} />;
+      return <CalendarDay key={idx} day={day} currentDay={currentDay} onClick={onClickDay} />;
     });
   };
 
