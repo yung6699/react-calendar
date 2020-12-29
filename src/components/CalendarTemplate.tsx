@@ -48,9 +48,8 @@ const CalendarTemplate = () => {
   }, [selectedYear]);
 
   const onIncrease = () => {
-    const isLastMonth = selectedMonth === LAST_MONTH;
-    const newMonth = isLastMonth ? FIRST_MONTH : selectedMonth + 1;
-    const newYear = isLastMonth ? selectedYear + 1 : selectedYear;
+    const newMonth = (selectedMonth + 1) % 12;
+    const newYear = newMonth === FIRST_MONTH ? selectedYear + 1 : selectedYear;
     const newDayOfWeek = (getFirstDayIndexOfWeek(newYear, newMonth) + selectedDay) % 7;
     setSelectedYear(newYear);
     setSelectedMonth(newMonth);
@@ -58,9 +57,8 @@ const CalendarTemplate = () => {
   };
 
   const onDecrease = () => {
-    const isFirstMonth = selectedMonth === FIRST_MONTH;
-    const newMonth = isFirstMonth ? LAST_MONTH : selectedMonth - 1;
-    const newYear = isFirstMonth ? selectedYear - 1 : selectedYear;
+    const newMonth = selectedMonth - 1 || LAST_MONTH;
+    const newYear = newMonth === LAST_MONTH ? selectedYear - 1 : selectedYear;
     const newDayOfWeek = (getFirstDayIndexOfWeek(newYear, newMonth) + selectedDay) % 7;
     setSelectedYear(newYear);
     setSelectedMonth(newMonth);
