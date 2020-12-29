@@ -47,22 +47,24 @@ const CalendarTemplate = () => {
     setEndDays([...endDays]);
   }, [selectedYear]);
 
+  const setDate = (year: number, month: number, dayOfWeek: number) => {
+    setSelectedYear(year);
+    setSelectedMonth(month);
+    setSelectedDayOfWeek(dayOfWeek);
+  };
+
   const onIncrease = () => {
     const newMonth = (selectedMonth + 1) % 12 || LAST_MONTH;
     const newYear = newMonth === FIRST_MONTH ? selectedYear + 1 : selectedYear;
     const newDayOfWeek = (getFirstDayIndexOfWeek(newYear, newMonth) + selectedDay) % 7;
-    setSelectedYear(newYear);
-    setSelectedMonth(newMonth);
-    setSelectedDayOfWeek(newDayOfWeek); // 선택 날짜의 요일
+    setDate(newYear, newMonth, newDayOfWeek);
   };
 
   const onDecrease = () => {
     const newMonth = selectedMonth - 1 || LAST_MONTH;
     const newYear = newMonth === LAST_MONTH ? selectedYear - 1 : selectedYear;
     const newDayOfWeek = (getFirstDayIndexOfWeek(newYear, newMonth) + selectedDay) % 7;
-    setSelectedYear(newYear);
-    setSelectedMonth(newMonth);
-    setSelectedDayOfWeek(newDayOfWeek);
+    setDate(newYear, newMonth, newDayOfWeek);
   };
 
   const onClickDay = (day: number, dayOfWeek: number) => {
