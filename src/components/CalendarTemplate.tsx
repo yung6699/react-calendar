@@ -6,7 +6,9 @@ import CalendarMain from "./CalendarMain";
 
 const CalendarBlock = styled.table`
   max-width: 500px;
+  min-width: 300px;
   width: 100%;
+  margin: 0 auto;
 `;
 
 const CalendarTemplate = () => {
