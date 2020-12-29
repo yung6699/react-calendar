@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { CALENDAR_ITEM_WIDTH } from "../styles/Variables";
+import { CALENDAR_ITEM_WIDTH, SELECTED_CLASS_NAME } from "../styles/Variables";
 import { getWeekClass } from "../utils";
 
 interface DayProps {
@@ -26,7 +26,7 @@ const Item = styled.td`
     padding-bottom: 100%;
   }
 
-  &.active {
+  &.${SELECTED_CLASS_NAME} {
     position: relative;
     color: #fff;
     background: #0c050b;
@@ -36,8 +36,8 @@ const Item = styled.td`
 
 const CalendarDay = ({ day, dayOfWeek, selectedDay, onClick }: DayProps) => {
   const getActiveClass = (selectedDay: number) => {
-    const isActive = selectedDay === day;
-    return isActive ? "active" : "";
+    const isSelectedDay = selectedDay === day;
+    return isSelectedDay ? SELECTED_CLASS_NAME : "";
   };
 
   return (

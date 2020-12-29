@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { DAY_OF_THE_WEEK, MONTHS } from "../constants";
+import { DAY_OF_THE_WEEK } from "../constants";
 import { CALENDAR_ITEM_WIDTH, CALENDAR_ITEM_HEIGHT } from "../styles/Variables";
-import { getWeekClass } from "../utils";
+import { getWeekClass, getMonthName } from "../utils";
 
 const MainTitle = styled.tr`
   display: flex;
@@ -59,8 +59,14 @@ interface CalendarHeadProps {
 }
 
 const CalendarHead = ({ year, month, onIncrease, onDecrease }: CalendarHeadProps) => {
-  const getMonth = (month: number) => {
-    return MONTHS[month - 1].substring(0, 3).toUpperCase();
+  const getDayOfWeekRow = () => {
+    return [...DAY_OF_THE_WEEK].map((item: string, index: number) => {
+      return (
+        <td key={index} className={getWeekClass(index)}>
+          {item.substring(0, 3)}
+        </td>
+      );
+    });
   };
 
   return (
@@ -70,23 +76,14 @@ const CalendarHead = ({ year, month, onIncrease, onDecrease }: CalendarHeadProps
           &#60;
         </td>
         <td className={"calendar__title"}>
-          <b className={"calendar__title__month"}>{getMonth(month)}</b>
+          <b className={"calendar__title__month"}>{getMonthName(month)}</b>
           <b className={"calendar__title__year"}>{year}</b>
         </td>
         <td className={"calendar__next"} onClick={onIncrease}>
           &#62;
         </td>
       </MainTitle>
-      <DayOfWeek>
-        {DAY_OF_THE_WEEK.map((item: string, index: number) => {
-          const name = item.substring(0, 3);
-          return (
-            <td key={index} className={getWeekClass(index)}>
-              {name}
-            </td>
-          );
-        })}
-      </DayOfWeek>
+      <DayOfWeek>{getDayOfWeekRow()}</DayOfWeek>
     </thead>
   );
 };

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import CalendarDay from "./CalendarDay";
 import styled from "styled-components";
-import { getFirstDayIndexOfWeek } from "../utils";
-import { DAY_BOX_COUNT, LINE_COUNT } from "../constants";
+import { getDayRows } from "../utils";
 
 const Row = styled.tr`
   display: flex;
@@ -20,23 +19,8 @@ const CalendarMain = ({ selectedYear, selectedDay, selectedMonth, endDays, onCli
   const [dayRows, setDayRows] = useState<number[][]>([]);
 
   useEffect(() => {
-    const lastDay = endDays[selectedMonth - 1];
-    const firstDayIndexOfWeek = getFirstDayIndexOfWeek(selectedYear, selectedMonth); // 선택된 달의 1일의 요일을 찾는다.
-    const days = new Array(DAY_BOX_COUNT).fill(null);
-
-    for (let i = firstDayIndexOfWeek; i < lastDay + firstDayIndexOfWeek; i++) {
-      days[i] = i - firstDayIndexOfWeek + 1;
-    }
-
-    const rows: number[][] = [];
-    for (let i = 0; i < LINE_COUNT; i++) {
-      const start = i * 7;
-      const end = start + 7;
-      const row = days.slice(start, end);
-      rows.push(row);
-    }
-
-    setDayRows(rows);
+    const dayRows = getDayRows(selectedYear, selectedMonth);
+    setDayRows(dayRows);
   }, [endDays, selectedMonth]);
 
   const makeRow = (row: number[]) => {
