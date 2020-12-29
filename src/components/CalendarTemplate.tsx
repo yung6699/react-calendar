@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import dayjs from "dayjs";
 
 import CalendarHead from "./CalendarHead";
 import CalendarMain from "./CalendarMain";
@@ -12,9 +13,13 @@ const CalendarBlock = styled.table`
 `;
 
 const CalendarTemplate = () => {
+  const date = dayjs();
+  const [year, setYear] = useState<number>(date.year());
+  const [month, setMonth] = useState<number>(date.month());
+
   return (
     <CalendarBlock>
-      <CalendarHead />
+      <CalendarHead year={year} month={month} />
       <CalendarMain />
     </CalendarBlock>
   );

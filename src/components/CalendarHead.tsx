@@ -25,7 +25,7 @@ const MainTitle = styled.tr`
     justify-content: center;
     align-items: center;
 
-    .calendar__title__month {
+    .calendar__title__year {
       margin-right: 16px;
     }
   }
@@ -46,14 +46,19 @@ const DayOfWeek = styled.tr`
   }
 `;
 
-const CalendarHead = () => {
+interface CalendarHeadProps {
+  year: number;
+  month: number;
+}
+
+const CalendarHead = ({ year, month }: CalendarHeadProps) => {
   return (
     <thead>
       <MainTitle>
         <td className={"calendar__prev"}>&#60;</td>
         <td className={"calendar__title"}>
-          <div className={"calendar__title__month"}>JULY</div>
-          <div className={"calendar__title__year"}>2020</div>
+          <div className={"calendar__title__year"}>{year}년</div>
+          <div className={"calendar__title__month"}>{month}월</div>
         </td>
         <td className={"calendar__next"}>&#62;</td>
       </MainTitle>
