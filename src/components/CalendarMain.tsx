@@ -23,6 +23,7 @@ const CalendarMain = ({ selectedYear, selectedDay, selectedMonth, endDays, onCli
     const lastDay = endDays[selectedMonth - 1];
     const firstDayIndexOfWeek = getFirstDayIndexOfWeek(selectedYear, selectedMonth); // 선택된 달의 1일의 요일을 찾는다.
     const days = new Array(DAY_BOX_COUNT).fill(null);
+
     for (let i = firstDayIndexOfWeek; i < lastDay + firstDayIndexOfWeek; i++) {
       days[i] = i - firstDayIndexOfWeek + 1;
     }
