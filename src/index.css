@@ -6,6 +6,7 @@
 html, body {
     margin: 0;
     padding: 0;
+    height: 100%;
 }
 
 body {
@@ -28,3 +29,6 @@ td {
 ol, ul {
     list-style: none;
 }
+
+.sun { color: #df2735 !important; }
+.sat { color: #278edf !important; }
