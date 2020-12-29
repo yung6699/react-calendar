@@ -1,9 +1,12 @@
 import React from "react";
 import styled from "styled-components";
+import { DAY_OF_THE_WEEK } from "../constants";
+import { CALENDAR_ITEM_WIDTH, CALENDAR_ITEM_HEIGHT } from "../styles/Variables";
 
-const TableHead = styled.thead`
+const MainTitle = styled.tr`
   display: flex;
   justify-content: space-between;
+  width: 100%;
   height: 50px;
   color: #916aff;
   font-size: 24px;
@@ -28,16 +31,35 @@ const TableHead = styled.thead`
   }
 `;
 
+const DayOfWeek = styled.tr`
+  width: 100%;
+  display: flex;
+  td {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: ${CALENDAR_ITEM_WIDTH};
+    height: ${CALENDAR_ITEM_HEIGHT};
+  }
+`;
+
 const CalendarHead = () => {
   return (
-    <TableHead>
-      <td className={"calendar__prev"}>&#60;</td>
-      <td className={"calendar__title"}>
-        <div className={"calendar__title__month"}>JULY</div>
-        <div className={"calendar__title__year"}>2020</div>
-      </td>
-      <td className={"calendar__next"}>&#62;</td>
-    </TableHead>
+    <thead>
+      <MainTitle>
+        <td className={"calendar__prev"}>&#60;</td>
+        <td className={"calendar__title"}>
+          <div className={"calendar__title__month"}>JULY</div>
+          <div className={"calendar__title__year"}>2020</div>
+        </td>
+        <td className={"calendar__next"}>&#62;</td>
+      </MainTitle>
+      <DayOfWeek>
+        {DAY_OF_THE_WEEK.map((item: string, index: number) => {
+          return <td key={index}>{item}</td>;
+        })}
+      </DayOfWeek>
+    </thead>
   );
 };
 
