@@ -12,6 +12,19 @@ body {
     line-height: 1;
 }
 
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+tbody, thead {
+    display: block;
+}
+
+td {
+    box-sizing: border-box;
+}
+
 ol, ul {
     list-style: none;
 }
