@@ -1,7 +1,0 @@
-/node_modules
-build/*
-public/*
-src/react-app-env.d.ts
-src/serviceWorker.ts
-src/setupTests.ts
-src/reportWebVitals.ts.ts

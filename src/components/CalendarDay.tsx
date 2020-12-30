@@ -2,15 +2,16 @@ import React from "react";
 import styled from "styled-components";
 import { CALENDAR_ITEM_WIDTH, SELECTED_CLASS_NAME } from "../styles/Variables";
 import { getWeekClass } from "../utils";
+import { Dayjs } from "dayjs";
 
 interface DayProps {
-  day: number | null;
-  selectedDay: number;
-  dayOfWeek: number;
-  onClick: (day: number, dayOfWeek: number) => void;
+  date: Dayjs;
+  isGrayed: Boolean;
+  isSelected: Boolean;
+  onClick: (date:Dayjs) => void;
 }
 
-const Item = styled.td`
+const DayElement = styled.td<{isSelected: Boolean, isGrayed: Boolean}>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -19,33 +20,32 @@ const Item = styled.td`
   font-weight: 500;
   color: #0c050b;
   cursor: pointer;
-
+ 
   &:after {
     content: "";
     display: block;
     padding-bottom: 100%;
   }
-
-  &.${SELECTED_CLASS_NAME} {
-    position: relative;
-    color: #fff;
-    background: #0c050b;
-    border-radius: 50%;
-  }
+  
+  ${({isSelected})=>{
+    return isSelected && `
+      position: relative;
+      color: #fff;
+      background: #0c050b;
+      border-radius: 50%;
+    `
+  }}
+  
+  ${({isGrayed})=>{
+    return isGrayed && `color: gray !important; `
+}}
 `;
 
-const CalendarDay = ({ day, dayOfWeek, selectedDay, onClick }: DayProps) => {
-  const getActiveClass = (selectedDay: number) => {
-    const isSelectedDay = selectedDay === day;
-    return isSelectedDay ? SELECTED_CLASS_NAME : "";
-  };
-
+const CalendarDay = ({ date, isGrayed, isSelected, onClick }: DayProps) => {
   return (
-    <Item
-      className={[getActiveClass(selectedDay), getWeekClass(dayOfWeek)].join(" ")}
-      onClick={() => day && onClick(day, dayOfWeek)}>
-      {day}
-    </Item>
+    <DayElement isGrayed={isGrayed} isSelected={isSelected} onClick={() => onClick(date)} className={getWeekClass(date.day())}>
+      { date.date() }
+    </DayElement>
   );
 };
 

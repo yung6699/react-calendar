@@ -1,8 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { DAY_OF_THE_WEEK } from "../constants";
-import { CALENDAR_ITEM_WIDTH, CALENDAR_ITEM_HEIGHT } from "../styles/Variables";
-import { getWeekClass, getMonthName } from "../utils";
+import { Dayjs } from "dayjs";
+import { MONTH_LIST } from "../constants/enums";
 
 const MainTitle = styled.tr`
   display: flex;
@@ -33,40 +32,16 @@ const MainTitle = styled.tr`
   }
 `;
 
-const DayOfWeek = styled.tr`
-  display: flex;
-  width: 100%;
-  font-size: 20px;
-  color: #2ae1ae;
-
-  td {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #0c050b;
-
-    width: ${CALENDAR_ITEM_WIDTH};
-    height: ${CALENDAR_ITEM_HEIGHT};
-    font-weight: bold;
-  }
-`;
-
 interface CalendarHeadProps {
-  year: number;
-  month: number;
+  date: Dayjs;
   onIncrease: () => void;
   onDecrease: () => void;
 }
 
-const CalendarHead = ({ year, month, onIncrease, onDecrease }: CalendarHeadProps) => {
-  const getDayOfWeekRow = () => {
-    return [...DAY_OF_THE_WEEK].map((item: string, index: number) => {
-      return (
-        <td key={index} className={getWeekClass(index)}>
-          {item.substring(0, 3)}
-        </td>
-      );
-    });
+const CalendarHead = ({ date, onIncrease, onDecrease }: CalendarHeadProps) => {
+  const getMonth = (date: Dayjs) => {
+    const month = date.month() + 1;
+    return MONTH_LIST[month].substring(0, 3).toUpperCase();
   };
 
   return (
@@ -76,14 +51,13 @@ const CalendarHead = ({ year, month, onIncrease, onDecrease }: CalendarHeadProps
           &#60;
         </td>
         <td className={"calendar__title"}>
-          <b className={"calendar__title__month"}>{getMonthName(month)}</b>
-          <b className={"calendar__title__year"}>{year}</b>
+          <b className={"calendar__title__month"}>{ getMonth(date) }</b>
+          <b className={"calendar__title__year"}>{ date.year() }</b>
         </td>
         <td className={"calendar__next"} onClick={onIncrease}>
           &#62;
         </td>
       </MainTitle>
-      <DayOfWeek>{getDayOfWeekRow()}</DayOfWeek>
     </thead>
   );
 };

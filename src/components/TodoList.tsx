@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import { DAY_OF_THE_WEEK } from "../constants";
+import { DAY_OF_WEEK } from "../constants/enums";
+import { Dayjs } from "dayjs";
 
 interface CalendarSideProps {
-  day: number;
-  dayOfWeek: number;
+  date?: Dayjs;
 }
 
 const SideContent = styled.div`
@@ -28,13 +28,13 @@ const SideContent = styled.div`
   }
 `;
 
-const CalendarSide = ({ day, dayOfWeek }: CalendarSideProps) => {
+const TodoList = ({ date }: CalendarSideProps) => {
   return (
     <SideContent>
-      <div className={"dayOfWeek"}>{DAY_OF_THE_WEEK[dayOfWeek]}</div>
-      <div className={"day"}>{day}</div>
+      <div className={"dayOfWeek"}>{date && DAY_OF_WEEK[date.day()]}</div>
+      <div className={"day"}>{date?.date()}</div>
     </SideContent>
   );
 };
 
-export default CalendarSide;
+export default TodoList;
