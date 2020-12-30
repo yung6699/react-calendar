@@ -39,10 +39,6 @@ const CalendarTemplate = () => {
   const [endDays, setEndDays] = useState<number[]>([]);
 
   useEffect(() => {
-    setSelectedYear(date.year());
-  }, []);
-
-  useEffect(() => {
     const endDays = getEndDays(selectedYear);
     setEndDays([...endDays]);
   }, [selectedYear]);
