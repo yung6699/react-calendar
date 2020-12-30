@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { CALENDAR_ITEM_WIDTH, SELECTED_CLASS_NAME } from "../styles/Variables";
-import { getWeekClass } from "../utils";
+import { CALENDAR_ITEM_WIDTH, SELECTED_CLASS_NAME } from "styles/Variables";
+import { getWeekClass } from "utils";
 import { Dayjs } from "dayjs";
 
 interface DayProps {

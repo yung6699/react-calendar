@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Dayjs } from "dayjs";
-import { MONTH_LIST } from "../constants/enums";
+import { MONTH_LIST } from "constants/enums";
 
 const MainTitle = styled.tr`
   display: flex;

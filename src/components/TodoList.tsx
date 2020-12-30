@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { DAY_OF_WEEK } from "../constants/enums";
+import { DAY_OF_WEEK } from "constants/enums";
 import { Dayjs } from "dayjs";
 
 interface CalendarSideProps {

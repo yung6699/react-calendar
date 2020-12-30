@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import dayjs, { Dayjs } from "dayjs";
 import styled from "styled-components";
-import CalendarHead from "./CalendarHead";
-import CalendarMain from "./CalendarMain";
-import '../plugin/DatePlugin';
+import CalendarHead from "components/CalendarHead";
+import CalendarMain from "components/CalendarMain";
+import 'plugin/DatePlugin';
 
 const CalendarWrapper = styled.table`
   width: 100%;

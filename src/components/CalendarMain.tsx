@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { getWeekClass } from "../utils";
-import { CALENDAR_ITEM_WIDTH } from "../styles/Variables";
+import { getWeekClass } from "utils";
+import { CALENDAR_ITEM_WIDTH } from "styles/Variables";
 import { Dayjs } from "dayjs";
-import CalendarDay from "./CalendarDay";
+import CalendarDay from "components/CalendarDay";
 
 const Row = styled.tr`
   display: flex;
