@@ -5,6 +5,7 @@ import { Dayjs } from "dayjs";
 import Input from "components/Input";
 import useInput from "hooks/useInputs";
 import { ITodo } from "store/todos"
+import { FaRegTrashAlt, FaPlusCircle } from "react-icons/fa";
 
 
 interface CalendarSideProps {
@@ -48,14 +49,16 @@ const DateWrapper = styled.div`
 const InputWrapper = styled.div`
     display: flex;
     width: 100%;
-    padding: 0 24px;
+    padding: 0 20px;
     box-sizing: border-box;
 `;
 
-const SaveButton = styled.button`
-   width: 60px;
-   outline: none;
-   margin-left: 4px;
+const SaveButton = styled.div`
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   margin-left: 8px;
+   font-size: 30px;
 `;
 
 const List = styled.div`
@@ -113,14 +116,17 @@ const TodoList = ({ date, todos, onInsert, onRemove, onToggle }: CalendarSidePro
           <ListItem key={item.id}>
             <ListItemCheckBox type="checkbox" checked={item.done} readOnly={true}/>
             <ListItemText onClick={() => onToggle?.(date, item.id)} done={item.done}>{item.text}</ListItemText>
-            <button onClick={() => onRemove?.(date, item.id)}>삭제</button>
+            <div onClick={() => onRemove?.(date, item.id)}><FaRegTrashAlt /></div>
           </ListItem>
       )
     });
   };
 
   const onSave = (date: Dayjs, value:string) => {
-    if (!value) return;
+    if (!value) {
+      window.alert('내용을 입력하세요!');
+      return;
+    }
     onInsert?.(date, value);
     onReset();
   };
@@ -133,7 +139,9 @@ const TodoList = ({ date, todos, onInsert, onRemove, onToggle }: CalendarSidePro
       </DateWrapper>
       <InputWrapper>
         <Input onChange={onChange} value={value}/>
-        <SaveButton onClick={() => date && onSave(date, value)}>저장</SaveButton>
+        <SaveButton onClick={() => date && onSave(date, value)}>
+          <FaPlusCircle/>
+        </SaveButton>
       </InputWrapper>
       <List>
         { todos && date && makeTodoList(todos, date) }
