@@ -51,8 +51,7 @@ type ToggleAction = ReturnType<typeof todosActions.toggle>;
 const reducer = handleActions<ITodosState, any>(
   {
     [TOGGLE]: (state: ITodosState, action:ToggleAction) => {
-      const { payload } = action;
-      const { date, id } = payload;
+      const { payload: { date, id } } = action;
       const key = getKey(date);
       const updateTodos = state[key].map(todo => todo.id === id ? { ...todo, done: !todo.done } : todo);
       return {
@@ -61,8 +60,7 @@ const reducer = handleActions<ITodosState, any>(
       }
     },
     [REMOVE]: (state:ITodosState, action:RemoveAction) => {
-      const { payload } = action;
-      const { date, id } = payload;
+      const { payload: { date, id } } = action;
       const key = getKey(date);
       const removedTodos = state[key].filter(todo => todo.id !== id);
       return {
@@ -71,8 +69,7 @@ const reducer = handleActions<ITodosState, any>(
       };
     },
     [INSERT]: (state:ITodosState, action: InsertAction) => {
-      const { payload } = action;
-      const { date, todo } = payload;
+      const { payload: { date, todo } } = action;
       const key = getKey(date);
       const list = state[key] || [];
       list.push(todo);
