@@ -31,9 +31,9 @@ export interface ITodosState {
 export const todosActions = {
   toggle: createAction<UpdateType, UpdateType>(TOGGLE, ({ date, id}) => ({ date, id })),
   remove: createAction<UpdateType, UpdateType>(REMOVE, ({ date, id}) => ({ date, id })),
-  insert: createAction<{ key: string, todo: ITodo }, InsertType>(INSERT, ({ date, value }) => {
+  insert: createAction<{ date:Dayjs, todo: ITodo }, InsertType>(INSERT, ({ date, value }) => {
     return {
-      key: getKey(date),
+      date,
       todo: {
         id: ++id,
         text: value,
@@ -72,7 +72,8 @@ const reducer = handleActions<ITodosState, any>(
     },
     [INSERT]: (state:ITodosState, action: InsertAction) => {
       const { payload } = action;
-      const { key, todo } = payload;
+      const { date, todo } = payload;
+      const key = getKey(date);
       const list = state[key] || [];
       list.push(todo);
       return {

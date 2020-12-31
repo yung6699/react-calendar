@@ -10,5 +10,5 @@ export const getWeekClass = (order: number) => {
 };
 
 export const getKey = (date: Dayjs) => {
-  return `${date.year()}-${date.month()}-${date.date()}`;
+  return date.format("YYYYMMDD");
 };
