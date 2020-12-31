@@ -81,7 +81,7 @@ const ListItem = styled.div`
   justify-content: space-between;
   font-size: 24px;
   font-weight: bold;
-  padding: 12px;
+  padding: 12px 6px;
   box-sizing: border-box;
   color: #fff;
 `;

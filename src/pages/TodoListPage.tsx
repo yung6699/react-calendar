@@ -8,15 +8,30 @@ import { todosActions, InsertType, ITodosState, ITodo, UpdateType } from "store/
 import { bindActionCreators, Dispatch } from 'redux';
 import { getKey } from "../utils";
 
+const Wrapper = styled.div`
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: #e7ebec;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const Container = styled.div`
   display: flex;
   flex-direction: row;
   margin: 0 auto;
   box-sizing: border-box;
-  border-radius: 24px;
   overflow: hidden;
+  width: 80%;
+  border-radius: 16px;
+
+  min-height: 600px;
   max-width: 800px;
-  min-height: 500px;
+  max-height: 800px;
 `;
 
 interface TodoListPageProps {
@@ -57,10 +72,12 @@ const TodoListPage = ({ allTodos, insert, remove, toggle}: TodoListPageProps) =>
   const onToggle = (date:Dayjs, id: number) => toggle({ date, id });
 
   return (
-    <Container>
-      <TodoList date={date} todos={todos} onInsert={onInsert} onRemove={onRemove} onToggle={onToggle}/>
-      <Calendar onGetDate={onGetDate} markingList={markingList}/>
-    </Container>
+    <Wrapper>
+      <Container>
+        <TodoList date={date} todos={todos} onInsert={onInsert} onRemove={onRemove} onToggle={onToggle}/>
+        <Calendar onGetDate={onGetDate} markingList={markingList}/>
+      </Container>
+    </Wrapper>
   );
 };
 
