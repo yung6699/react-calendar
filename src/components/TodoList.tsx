@@ -74,23 +74,31 @@ const List = styled.div`
 const ListItem = styled.div`
   width: 100%;
   display:flex;
+  align-items: center;
   justify-content: space-between;
-  font-size: 20px;
+  font-size: 24px;
   font-weight: bold;
   padding: 12px;
   box-sizing: border-box;
+  color: #fff;
 `;
+
+const ListItemCheckBox = styled.input`
+  display:none;
+`;
+
 
 const ListItemText = styled.div<{ done: Boolean }>`
   width: 100%;
-  max-width: 270px;
+  margin: 0 8px;
+  max-width: 250px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   
     ${({ done })=>{
       return done && `
-        text-decoration: line-through
+        text-decoration: line-through;
       `
     }}
 `;
@@ -103,8 +111,8 @@ const TodoList = ({ date, todos, onInsert, onRemove, onToggle }: CalendarSidePro
     return todos.map((item: ITodo) => {
       return (
           <ListItem key={item.id}>
-            <input type="checkbox" onChange={() => onToggle?.(date, item.id)} checked={item.done}/>
-            <ListItemText done={item.done}>{item.id} : {item.text}</ListItemText>
+            <ListItemCheckBox type="checkbox" checked={item.done} readOnly={true}/>
+            <ListItemText onClick={() => onToggle?.(date, item.id)} done={item.done}>{item.text}</ListItemText>
             <button onClick={() => onRemove?.(date, item.id)}>삭제</button>
           </ListItem>
       )
