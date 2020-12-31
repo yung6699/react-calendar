@@ -16,9 +16,10 @@ const CalendarWrapper = styled.table`
 
 interface CalendarProps {
   onGetDate? : (date:Dayjs) => void;
+  markingList?: string[]
 }
 
-const Calendar = ({ onGetDate }: CalendarProps) => {
+const Calendar = ({ onGetDate, markingList }: CalendarProps) => {
   const [selectedDate, setSelectedDate] = useState<Dayjs>(dayjs());
 
   useEffect(() => {
@@ -42,7 +43,7 @@ const Calendar = ({ onGetDate }: CalendarProps) => {
   return (
       <CalendarWrapper>
         <CalendarHead date={selectedDate} onDecrease={onDecrease} onIncrease={onIncrease}/>
-        <CalendarMain selectedDate={selectedDate} onClickDay={onClickDay} />
+        <CalendarMain selectedDate={selectedDate} markingList={markingList} onClickDay={onClickDay} />
       </CalendarWrapper>
   );
 };

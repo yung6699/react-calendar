@@ -5,15 +5,14 @@ import { Dayjs } from "dayjs";
 import Input from "components/Input";
 import useInput from "hooks/useInputs";
 import { ITodo } from "store/todos"
-import { getKey } from "../utils";
 
 
 interface CalendarSideProps {
   date?: Dayjs;
   todos?: ITodo[];
-  onInsert?: (value:any) => any;
-  onRemove?: (id:number) => any;
-  onToggle?: (id:number) => any;
+  onInsert?: (date:Dayjs, value:string) => any;
+  onRemove?: (date:Dayjs, id:number) => any;
+  onToggle?: (date:Dayjs, id:number) => any;
 }
 
 const SideContent = styled.div`
@@ -101,21 +100,20 @@ const TodoList = ({ date, todos, onInsert, onRemove, onToggle }: CalendarSidePro
   const { onChange, value, onReset } = useInput('');
 
   const makeTodoList = (todos: ITodo[], date: Dayjs) => {
-    const filterdTodo:ITodo[] = todos.filter(todo => todo.date === getKey(date));
-    return filterdTodo.map((item: ITodo) => {
+    return todos.map((item: ITodo) => {
       return (
           <ListItem key={item.id}>
-            <input type="checkbox" onChange={() => onToggle?.(item.id)} checked={item.done}/>
+            <input type="checkbox" onChange={() => onToggle?.(date, item.id)} checked={item.done}/>
             <ListItemText done={item.done}>{item.id} : {item.text}</ListItemText>
-            <button onClick={() => onRemove?.(item.id)}>삭제</button>
+            <button onClick={() => onRemove?.(date, item.id)}>삭제</button>
           </ListItem>
       )
     });
   };
 
-  const onSave = (value:any) => {
+  const onSave = (date: Dayjs, value:string) => {
     if (!value) return;
-    onInsert?.(value);
+    onInsert?.(date, value);
     onReset();
   };
 
@@ -127,7 +125,7 @@ const TodoList = ({ date, todos, onInsert, onRemove, onToggle }: CalendarSidePro
       </DateWrapper>
       <InputWrapper>
         <Input onChange={onChange} value={value}/>
-        <SaveButton onClick={() => onSave(value)}>저장</SaveButton>
+        <SaveButton onClick={() => date && onSave(date, value)}>저장</SaveButton>
       </InputWrapper>
       <List>
         { todos && date && makeTodoList(todos, date) }

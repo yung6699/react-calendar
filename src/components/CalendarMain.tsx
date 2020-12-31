@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { getWeekClass } from "utils";
+import { getKey, getWeekClass } from "utils";
 import { CALENDAR_ITEM_WIDTH } from "styles/Variables";
 import { Dayjs } from "dayjs";
 import CalendarDay from "components/CalendarDay";
@@ -29,10 +29,11 @@ const DayOfWeek = styled.tr`
 
 interface CalendarMainProps {
   selectedDate: Dayjs;
+  markingList?: string[];
   onClickDay: (date: Dayjs) => void;
 }
 const DAY_OF_THE_WEEK: string[] = ["SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"];
-const CalendarMain = ({ selectedDate, onClickDay }: CalendarMainProps) => {
+const CalendarMain = ({ selectedDate, markingList, onClickDay }: CalendarMainProps) => {
   const [calendar, setCalendar] = useState<Dayjs[][]>([]);
 
   useEffect(() => {
@@ -58,7 +59,8 @@ const CalendarMain = ({ selectedDate, onClickDay }: CalendarMainProps) => {
       const key = date.format();
       const isGrayed = selectedDate.month() !== date.month();
       const isSelected = selectedDate.date() === date.date() && !isGrayed;
-      return <CalendarDay key={key} date={date} isSelected={isSelected} isGrayed={isGrayed} onClick={onClickDay}/>;
+      const isMarked = markingList?.includes(getKey(date));
+      return <CalendarDay key={key} date={date} isSelected={isSelected} isGrayed={isGrayed} isMarked={isMarked} onClick={onClickDay}/>;
     });
   };
 

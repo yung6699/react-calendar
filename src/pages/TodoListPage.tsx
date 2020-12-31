@@ -4,8 +4,9 @@ import TodoList from "../components/TodoList";
 import styled from "styled-components";
 import { Dayjs } from "dayjs";
 import { connect } from "react-redux";
-import { todosActions, InsertType, ITodosState, ITodo } from "store/todos"
+import { todosActions, InsertType, ITodosState, ITodo, UpdateType } from "store/todos";
 import { bindActionCreators, Dispatch } from 'redux';
+import { getKey } from "../utils";
 
 const Container = styled.div`
   display: flex;
@@ -19,40 +20,54 @@ const Container = styled.div`
 `;
 
 interface TodoListPageProps {
-  todos: ITodo[];
+  allTodos: ITodosState;
   insert: (data:InsertType) => void;
-  remove: (id:number) => void;
-  toggle: (id:number) => void;
+  remove: (data:UpdateType) => void;
+  toggle: (data:UpdateType) => void;
 }
 
-const TodoListPage = ({ todos, insert, remove, toggle}: TodoListPageProps) => {
+const TodoListPage = ({ allTodos, insert, remove, toggle}: TodoListPageProps) => {
   const [date, setDate] = useState<Dayjs>();
+  const [todos, setTodos] = useState<ITodo[]>([]);
+  const [markingList, setMarkingList] = useState<string[]>();
 
-  const onGetDate = (date:Dayjs) => {
-    setDate(date)
-  };
+  useEffect(() => {
+    if (!date) return;
+    const key = getKey(date);
+    setTodos(allTodos[key]);
+  }, [date, allTodos]);
 
-  const onInsert = (value:any) => {
+  useEffect(() => {
+    if (!date) return;
+    const markingList = [];
+    for (let key in allTodos) {
+      if (allTodos[key].length > 0) markingList.push(key);
+    }
+    setMarkingList(markingList)
+  }, [allTodos]);
+
+  const onGetDate = (date:Dayjs) => setDate(date);
+
+  const onInsert = (date:Dayjs, value:string) => {
     if (!date || !value) return;
-    const data: InsertType = { date, value };
-    insert(data);
+    insert({ date, value });
   };
 
-  const onRemove = (id:number) => remove(id);
-  const onToggle = (id: number) => toggle(id);
+  const onRemove = (date:Dayjs, id:number) => remove({ date, id });
+  const onToggle = (date:Dayjs, id: number) => toggle({ date, id });
 
   return (
     <Container>
       <TodoList date={date} todos={todos} onInsert={onInsert} onRemove={onRemove} onToggle={onToggle}/>
-      <Calendar onGetDate={onGetDate}/>
+      <Calendar onGetDate={onGetDate} markingList={markingList}/>
     </Container>
   );
 };
 
 
 export default connect(
-  ({ todos }:any) => ({
-    todos: todos.todos
+  ({ todos }: any) => ({
+    allTodos: todos
   }),
   (dispatch:Dispatch) => bindActionCreators(todosActions, dispatch)
 )(TodoListPage);

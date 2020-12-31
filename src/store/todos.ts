@@ -10,39 +10,40 @@ const TOGGLE = "todo/TOGGLE";
 
 export interface InsertType {
   date: Dayjs;
-  value: any;
+  value: string;
+}
+
+export interface UpdateType {
+  date: Dayjs;
+  id: number;
 }
 
 export interface ITodo {
   id: number;
   text: any;
   done: boolean;
-  date: string;
 }
 
 export interface ITodosState {
-  todos: ITodo[];
+  [key: string]: ITodo[];
 }
 
 export const todosActions = {
-  toggle: createAction<number, number>(TOGGLE, id => id),
-  remove: createAction<number, number>(REMOVE, id => id),
-  insert: createAction<ITodo, InsertType>(INSERT, ({ date, value }) => {
-    const todoInfo: ITodo = {
-      id,
-      text: value,
-      done: false,
-      date: getKey(date),
+  toggle: createAction<UpdateType, UpdateType>(TOGGLE, ({ date, id}) => ({ date, id })),
+  remove: createAction<UpdateType, UpdateType>(REMOVE, ({ date, id}) => ({ date, id })),
+  insert: createAction<{ key: string, todo: ITodo }, InsertType>(INSERT, ({ date, value }) => {
+    return {
+      key: getKey(date),
+      todo: {
+        id: ++id,
+        text: value,
+        done: false,
+      }
     };
-    id++;
-    return todoInfo;
   }),
 };
 
-const initialState: ITodosState = {
-  todos: []
-};
-
+const initialState: ITodosState = {};
 type InsertAction = ReturnType<typeof todosActions.insert>;
 type RemoveAction = ReturnType<typeof todosActions.remove>;
 type ToggleAction = ReturnType<typeof todosActions.toggle>;
@@ -50,27 +51,33 @@ type ToggleAction = ReturnType<typeof todosActions.toggle>;
 const reducer = handleActions<ITodosState, any>(
   {
     [TOGGLE]: (state: ITodosState, action:ToggleAction) => {
-      const { payload: id } = action;
-      const updateTodos = state.todos.map(todo => todo.id === id ? { ...todo, done: !todo.done } : todo);
-      console.log('updateTodos', updateTodos);
+      const { payload } = action;
+      const { date, id } = payload;
+      const key = getKey(date);
+      const updateTodos = state[key].map(todo => todo.id === id ? { ...todo, done: !todo.done } : todo);
       return {
         ...state,
-       todos: updateTodos
+        [key]: updateTodos
       }
     },
     [REMOVE]: (state:ITodosState, action:RemoveAction) => {
-      const { payload: id } = action;
-      const filteredTodos = state.todos.filter(todo => todo.id !== id);
+      const { payload } = action;
+      const { date, id } = payload;
+      const key = getKey(date);
+      const removedTodos = state[key].filter(todo => todo.id !== id);
       return {
         ...state,
-        todos: filteredTodos
+        [key]: removedTodos
       };
     },
     [INSERT]: (state:ITodosState, action: InsertAction) => {
-      const { payload: todo } = action;
-      state.todos.push(todo);
+      const { payload } = action;
+      const { key, todo } = payload;
+      const list = state[key] || [];
+      list.push(todo);
       return {
-        ...state
+        ...state,
+        [key]: list
       };
     },
   }, initialState);
